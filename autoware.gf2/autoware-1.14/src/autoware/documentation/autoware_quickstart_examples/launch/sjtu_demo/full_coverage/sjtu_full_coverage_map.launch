@@ -1,0 +1,33 @@
+<launch>
+
+  <!-- TF -->
+  <include file="$(env HOME)/.autoware/longma_test/tf/tf.launch"/>
+
+  <!-- Point Cloud -->
+  <include file="$(find map_file)/launch/points_map_loader.launch">
+      <arg name="path_pcd" 
+           value=
+           '$(env HOME)/.autoware/longma_test/map/pointcloud_map/autoware-1.pcd,
+            $(env HOME)/.autoware/longma_test/map/pointcloud_map/autoware-2.pcd,
+            $(env HOME)/.autoware/longma_test/map/pointcloud_map/autoware-3.pcd,
+            $(env HOME)/.autoware/longma_test/map/pointcloud_map/autoware-4.pcd,
+            $(env HOME)/.autoware/longma_test/map/pointcloud_map/autoware-5.pcd,
+            $(env HOME)/.autoware/longma_test/map/pointcloud_map/autoware-6.pcd'/>
+  </include>
+
+  <!-- Vector Map -->
+  <node pkg="map_file" type="vector_map_loader" name="vector_map_loader" 
+    args="
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/dtlane.csv 
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/area.csv 
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/lane.csv
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/line.csv
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/node.csv
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/point.csv
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/roadedge.csv
+        $(env HOME)/.autoware/longma_test/map/vector_map/v_full_coverage/wayarea.csv"/>
+
+  <node pkg="rviz" type="rviz" name="rviz" 
+    args="-d $(env HOME)/.autoware/longma_test/sjtu.rviz"/>
+
+</launch>

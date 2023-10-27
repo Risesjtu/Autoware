@@ -1,0 +1,35 @@
+<launch>
+
+  <group ns="/sensing/radar/right">
+    <node pkg="pe_ars408_ros" type="pe_ars408_node" name="$(anon pe_ars408_node)" output="screen">
+      <param name="can_input_topic" value="can_tx" />
+      <param name="object_output_topic" value="objects" />
+      <param name="output_frame" value="radar/right" />
+    </node>
+    <node pkg="topic_tools" type="throttle" name="$(anon radar_throttle)" output="screen"
+          args="messages objects 100"/>
+
+    <include file="$(find pe_dynamic_object_visualization)/launch/dynamic_object_visualizer.launch">
+      <arg name="input" default="objects_throttle"/>
+      <arg name="only_known_objects" default="false"/>
+    </include>
+  </group>
+
+  <group ns="/sensing/radar/left">
+    <node pkg="pe_ars408_ros" type="pe_ars408_node" name="$(anon pe_ars408_node)" output="screen">
+      <param name="can_input_topic" value="can_tx" />
+      <param name="object_output_topic" value="objects" />
+      <param name="output_frame" value="radar/left" />
+    </node>
+    <node pkg="topic_tools" type="throttle" name="$(anon radar_throttle)" output="screen"
+          args="messages objects 100"/>
+
+    <include file="$(find pe_dynamic_object_visualization)/launch/dynamic_object_visualizer.launch">
+      <arg name="input" default="objects_throttle"/>
+      <arg name="only_known_objects" default="false"/>
+    </include>
+  </group>
+
+
+
+</launch>

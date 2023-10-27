@@ -1,0 +1,37 @@
+<launch>
+    <!-- record sensor messages -->
+    <node name="rosbag_record" type="record" pkg="rosbag" 
+        args="--split --size=1024 -o $(env HOME)/bagfiles/bag
+        /points_up
+        /points_front
+        /gnss_pose
+        /ndt_pose
+        /usb_cam_front/image_raw/compressed
+        " 
+        output="screen"/>
+
+    <!-- 
+        /usb_cam_back/image_raw/compressed
+        /usb_cam_left/image_raw/compressed
+        /usb_cam_right/image_raw/compressed
+        /points_raw 
+        /tf_static 
+        /nmea_sentence 
+        /objects 
+        /detected_polygons 
+        /local_trajectories_eval_rviz 
+        /safety_border 
+        /final_waypoints 
+        /dynamic_collision_points_rviz 
+        /tracked_objects 
+        /current_pose  
+        /current_velocity 
+        /initialpose
+
+               /fixposition/ypr
+        /fixposition/navsatfix
+        /fixposition/poiimu
+    -->
+
+</launch> 
+

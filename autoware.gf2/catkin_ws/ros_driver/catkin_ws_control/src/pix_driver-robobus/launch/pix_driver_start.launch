@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find pix_driver)/launch/pix_driver.launch" />
+    <include file="$(find socketcan_bridge)/launch/socketcan_bridge.launch" />
+</launch>

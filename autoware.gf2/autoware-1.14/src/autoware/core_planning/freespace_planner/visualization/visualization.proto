@@ -1,0 +1,69 @@
+syntax = "proto3";
+package visualization;
+
+service Visualizer{
+    rpc DataSend (Frame) returns (Reply) {};
+}
+
+message Reply {
+    bool reply = 1;
+}
+
+message Point{
+    double x = 1;
+    double y = 2;
+}
+
+message Label{
+    string text = 1;
+    Point pos = 2;
+}
+
+message Color{
+    int32 r = 1;
+    int32 g = 2;
+    int32 b = 3;
+    int32 a = 4;
+}
+
+message BaseLine {
+    enum LineStyle {
+      SolidLine = 0;
+      DashLine = 1;
+      DotLine = 2;
+      DashDotLine = 3;
+      DashDotDotLine = 4;
+    }
+    enum Symbol {
+        none = 0;
+        t = 1;
+        s = 2;
+        p = 3;
+        h = 4;
+        star = 5;
+        plus = 6;
+        d = 7;
+        arrow_down = 8;
+        o = 9;
+    }
+
+    Label label = 1;
+    repeated Point points = 3;
+    Color color = 4;
+    LineStyle line_style = 5;
+    int32 thickness = 6;
+    Symbol symbol = 7;
+}
+
+
+message Frame{
+    enum Type{
+        CURVE = 0;
+        POLYGON = 1;
+        COLORMAP = 2;
+    }
+    string topic = 1;
+    repeated BaseLine lines= 2;
+    Type type = 3;
+} 
+

@@ -1,0 +1,20 @@
+<launch>
+  <arg name="can_device" default="can1" />
+  <arg name="can_topic" default="can_raw" />
+  <arg name="perform_setup" default="False" />
+  <arg name="can_circuit" default="0" />
+  <arg name="can_hardware_id" />
+
+    <include file="$(find kvaser_interface)/launch/kvaser_can_bridge.launch">
+      <arg name="can_hardware_id" value="$(arg can_hardware_id)" />
+      <arg name="can_circuit_id" value="$(arg can_circuit)" />
+      <arg name="can_bit_rate" value="500000" />
+    </include>
+
+    <node pkg="pe_ars408_ros" type="pe_ars408_status" name="$(anon pe_ars408_status)" output="screen">
+	<param name="can_input_topic" value="can_tx" />
+        <param name="can_output_topic" value="can_rx" />
+        <param name="perform_setup" value="$(arg perform_setup)" />
+    </node>
+
+</launch>

@@ -1,0 +1,16 @@
+<launch>
+<!-- rsStartToEndDistance -->
+   <!-- find_nearest_goal_in_lane()中，搜索规划终点的范围。要根据op矢量全局轨迹画得离停车位的远近，调整这里的阈值，使得第一段a*有一个不错的终点 -->
+   <arg name="max_dist_to_lane_driving_goal"  default="16" />
+   <arg name="min_dist_to_lane_driving_goal"  default="14" />  <!-- 5 -->
+   <arg name="velocitySource" default="1"/>
+   <arg name="enableCover" default="false"/>
+
+   <node pkg="scenario_manager" type="scenario_manager" name="scenario_manager" output="screen">
+      <param name="max_dist_to_lane_driving_goal"        value="$(arg max_dist_to_lane_driving_goal)" />
+      <param name="min_dist_to_lane_driving_goal"        value="$(arg min_dist_to_lane_driving_goal)" />
+      <param name="velocitySource"        value="$(arg velocitySource)" />
+      <param name="enableCover" type="bool" value="$(arg enableCover)" />
+   </node>
+
+</launch>

@@ -1,0 +1,30 @@
+<launch>
+	<!-- 经过测量, 如果在gazebo中设置scale=2, 则尺寸为0.2m -->
+	<arg name="marker_size" default="10" />
+	<arg name="max_new_marker_error" default="0.12" />
+	<arg name="max_track_error" default="0.25" />
+	<arg name="charge_id" default="9" />
+	<arg name="trash_id" default="8" />
+	<arg name="dist_before_charge" default="2.0" />
+	<arg name="dist_before_trash" default="2.0" />
+	<arg name="cam_image_topic" default="/usb_cam_back/image_raw" />
+	<arg name="cam_info_topic" default="/usb_cam_back/camera_info" />
+	<arg name="output_frame" default="/world" />
+	<arg name="debug_mode" default="true" />
+
+	<node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkersNoKinect" respawn="false" output="screen">
+		<param name="marker_size"           type="double" value="$(arg marker_size)" />
+		<param name="max_new_marker_error"  type="double" value="$(arg max_new_marker_error)" />
+		<param name="max_track_error"       type="double" value="$(arg max_track_error)" />
+		<param name="output_frame"          type="string" value="$(arg output_frame)" />
+
+		<param name="dist_before_charge"    type="double" value="$(arg dist_before_charge)" />
+		<param name="dist_before_trash"     type="double" value="$(arg dist_before_trash)" />
+		<param name="charge_id"             type="int"    value="$(arg charge_id)" />
+		<param name="trash_id"              type="int"    value="$(arg trash_id)" />
+		<param name="debug_mode"            type="bool"   value="$(arg debug_mode)" />
+
+		<remap from="camera_image"  to="$(arg cam_image_topic)" />
+		<remap from="camera_info"   to="$(arg cam_info_topic)" />
+	</node>
+</launch>

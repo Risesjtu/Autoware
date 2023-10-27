@@ -1,0 +1,19 @@
+<launch>
+  <arg name="m_sjtuGoalDataPath" default="$(env HOME)/autoware.gf2/autoware-1.14/src/autoware/documentation/autoware_quickstart_examples/config/sjtu_full_coverage_goal.csv"/>
+  <arg name="m_enableRvizInput" default="true"/>
+  <arg name="m_RoadEdge" default="false" />
+  <arg name="m_DistanceToRoadEdge" default="1.0"/>
+  <arg name="m_InputType" default="false"/>
+
+  <include file="$(find op_global_planner)/launch/op_global_planner.launch">
+    <arg name="enableRvizInput" value="$(arg m_enableRvizInput)" />
+    <arg name="goalDataPath" value="$(arg m_sjtuGoalDataPath)" />
+    <arg name="RoadEdge" value="$(arg m_RoadEdge)"/>
+    <arg name="DistanceToRoadEdge" value="$(arg m_DistanceToRoadEdge)"/>
+  </include> 
+
+  <include file="$(find waypoint_maker)/launch/waypoint_saver.launch">
+    <arg name="input_type" value="$(arg m_InputType)"/>
+  </include>
+
+</launch>

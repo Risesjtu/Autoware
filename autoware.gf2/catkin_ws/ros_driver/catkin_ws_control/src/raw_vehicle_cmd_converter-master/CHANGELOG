@@ -1,0 +1,4 @@
+# 20211227
+## editor Mark Jin
+## detail
+modify include/raw_vehicle_cmd_converter/node.hpp and src/node.cpp to adapt autoware.ai with robobus firmware.

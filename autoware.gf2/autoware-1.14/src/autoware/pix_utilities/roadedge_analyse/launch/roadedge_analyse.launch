@@ -1,0 +1,11 @@
+<launch>
+<!-- rsStartToEndDistance -->
+   <arg name="distance_to_road_edge"           default="1.5" />
+   <arg name="rsStartToEndDistance"           default="8.0" />
+   <arg name="roadEdgeGenDistanceThreshold"           default="8.0" />
+   <node pkg="roadedge_analyse" type="roadedge_analyse" name="roadedge_analyse" output="screen">
+   <param name="distance_to_road_edge"         value="$(arg distance_to_road_edge)" />
+   <param name="rsStartToEndDistance"         value="$(arg rsStartToEndDistance)" />
+   <param name="roadEdgeGenDistanceThreshold"         value="$(arg roadEdgeGenDistanceThreshold)" />
+   </node>
+</launch>

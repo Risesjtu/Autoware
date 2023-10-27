@@ -1,0 +1,14 @@
+<!-- -->
+<launch>
+
+  <arg name="plane" default="7"/>
+  <arg name="fp_llh_topic" default="/fixposition/navsatfix"/>
+  <arg name="fp_ypr_topic" default="/fixposition/ypr"/>
+
+  <node pkg="gnss_localizer" type="nmea2tfpose" name="nmea2tfpose" output="screen">
+    <param name="plane" value="$(arg plane)"/>
+    <param name="fp_llh_topic" value="$(arg fp_llh_topic)"/>
+    <param name="fp_ypr_topic" value="$(arg fp_ypr_topic)"/>
+  </node>
+
+</launch>

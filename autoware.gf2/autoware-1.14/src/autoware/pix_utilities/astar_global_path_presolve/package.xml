@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>astar_global_path_presolve</name>
+  <version>0.0.0</version>
+  <description>The astar_global_path_presolve package</description>
+
+  <maintainer email="linkx@todo.todo">linkx</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+  <buildtool_depend>autoware_build_flags</buildtool_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <depend>autoware_config_msgs</depend>
+  <depend>autoware_health_checker</depend>
+  <depend>autoware_msgs</depend>
+  <depend>libwaypoint_follower</depend>
+  <depend>pcl_conversions</depend>
+  <depend>pcl_ros</depend>
+  <depend>roscpp</depend>
+  <depend>roslint</depend>
+  <depend>std_msgs</depend>
+  <depend>tf</depend>
+  <depend>vector_map</depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

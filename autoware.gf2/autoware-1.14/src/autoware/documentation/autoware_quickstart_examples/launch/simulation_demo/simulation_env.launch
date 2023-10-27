@@ -1,0 +1,4 @@
+<launch>
+   <include file="$(find vehicle_gazebo_simulation_launcher)/launch/openPlannerTest.launch"/>
+   <!-- <include file="$(find autoware_quickstart_examples)/launch/simulation_demo/dock_env.launch"/> -->
+</launch>

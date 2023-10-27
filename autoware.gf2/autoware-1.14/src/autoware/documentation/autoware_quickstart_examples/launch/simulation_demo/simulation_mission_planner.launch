@@ -1,0 +1,27 @@
+<launch>
+  <arg name="m_sjtuGoalDataPath" default="$(env HOME)/autoware.gf2/autoware-1.14/src/autoware/documentation/autoware_quickstart_examples/config/sjtu_goal.csv"/>
+  <arg name="m_enableRvizInput" default="true"/>
+  <arg name="m_RoadEdge" default="false" />
+  <arg name="m_DistanceToRoadEdge" default="0.75"/>
+
+  <include file="$(find scenario_manager)/launch/scenario_manager.launch"/>
+
+  <include file="$(find op_global_planner)/launch/op_global_planner.launch">
+    <arg name="enableRvizInput" value="$(arg m_enableRvizInput)" />
+    <arg name="goalDataPath" value="$(arg m_sjtuGoalDataPath)" />
+    <arg name="RoadEdge" value="$(arg m_RoadEdge)"/>
+    <arg name="DistanceToRoadEdge" value="$(arg m_DistanceToRoadEdge)"/>
+  </include> 
+
+  <arg name="m_load_csv" default ="true"/>
+  <arg name="m_path_file" default="$(env HOME)/autoware.gf2/autoware-1.14/src/autoware/documentation/autoware_quickstart_examples/config/record_waypoints.csv"/>
+  <arg name="replanning_mode" default="False" />
+
+  <!-- 通过waypoint_loader读取全局轨迹的方式 -->
+  <include file="$(find waypoint_maker)/launch/waypoint_loader.launch" >
+      <arg name="load_csv" value="$(arg m_load_csv)"/>
+      <arg name="multi_lane_csv" value="$(arg m_path_file)"/>
+      <arg name="replanning_mode" value="$(arg replanning_mode)"/>
+  </include>
+
+</launch>

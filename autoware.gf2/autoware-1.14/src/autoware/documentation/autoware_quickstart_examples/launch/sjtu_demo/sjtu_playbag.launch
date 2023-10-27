@@ -1,0 +1,30 @@
+<launch>
+  <!-- Point Cloud -->
+  <node pkg="rosbag" type="play" name="play" 
+      args="-r 1
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-05-11_5.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-05-35_6.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-05-59_7.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-06-22_8.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-06-37_9.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-06-51_10.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-07-07_11.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-07-23_12.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-07-42_13.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-08-04_14.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-08-17_15.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-08-33_16.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-08-50_17.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-09-09_18.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-09-27_19.bag
+        $(env HOME)/.autoware/sjtu_data/220621/bag_2022-06-21-17-09-44_20.bag">
+        <remap from="/points_raw/relay" to="/points_raw"/>
+  </node>
+  
+  <node pkg="image_transport" type="republish" name="republish" args="compressed in:=/flir_adk/image_raw raw out:=/flir_adk/image_raw"/>
+  <!-- <node pkg="rosbag" type="play" name="play" 
+        args=" -r 1
+        $(env HOME)/.autoware/sjtu_data/planFiles/bag_2022-08-16-20-38-01_0.bag
+        $(env HOME)/.autoware/sjtu_data/planFiles/bag_2022-08-16-20-41-40_1.bag"
+        output="screen"/> -->
+</launch>

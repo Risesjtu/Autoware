@@ -1,0 +1,16 @@
+<launch>
+  <arg name="can_device" default="can1" />
+  <arg name="can_topic" default="can_tx" />
+  <arg name="output_frame" default="ars408" />
+
+  <node pkg="socketcan_bridge" name="socketcan_bridge_node" type="socketcan_bridge_node" output="screen" respawn="true">
+    <remap from="received_messages" to="$(arg can_topic)"/>
+    <remap from="sent_messages" to="can_rx"/>
+    <param name="can_device" value="$(arg can_device)"/>
+  </node>
+  <node pkg="pe_ars408_ros" type="pe_ars408_node" name="ars408_node" output="screen" respawn="true">
+    <param name="can_input_topic" value="$(arg can_topic)"/>
+    <param name="object_output_topic" value="objects"/>
+    <param name="output_frame" value="$(arg output_frame)"/>
+  </node>
+</launch>

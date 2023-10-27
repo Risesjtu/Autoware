@@ -1,0 +1,13 @@
+<launch>
+   <arg name="max_dist_to_lane_driving_goal"  default="10" />
+   <arg name="min_dist_to_lane_driving_goal"  default="8" />  <!-- 5 -->
+   <arg name="velocitySource" default="1"/>
+   <arg name="enableCover" default="false"/>
+
+  <include file="$(find scenario_manager)/launch/scenario_manager.launch">
+      <arg name="max_dist_to_lane_driving_goal"        value="$(arg max_dist_to_lane_driving_goal)" />
+      <arg name="min_dist_to_lane_driving_goal"        value="$(arg min_dist_to_lane_driving_goal)" />
+      <arg name="velocitySource"        value="$(arg velocitySource)" />
+      <arg name="enableCover"       value="$(arg enableCover)"/>
+  </include>
+</launch>

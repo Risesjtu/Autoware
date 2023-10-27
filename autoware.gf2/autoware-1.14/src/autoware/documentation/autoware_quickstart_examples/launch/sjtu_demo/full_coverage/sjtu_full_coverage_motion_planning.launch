@@ -1,0 +1,13 @@
+<launch>
+  <arg name="m_enableSwerving"       default="false"  />
+  <arg name="m_rollOutsNumber"       default="2" />
+
+  <include file="$(find op_local_planner)/launch/op_common_params.launch">
+    <arg name="enableSwerving"  value="$(arg m_enableSwerving)"/>
+    <arg name="rollOutsNumber"  value="$(arg m_rollOutsNumber)"/>
+  </include>
+  <include file="$(find op_local_planner)/launch/op_trajectory_generator.launch"/>
+  <include file="$(find op_local_planner)/launch/op_motion_predictor.launch"/>
+  <include file="$(find op_local_planner)/launch/op_trajectory_evaluator.launch"/>
+  <include file="$(find op_local_planner)/launch/op_behavior_selector.launch"/>
+</launch>

@@ -1,0 +1,14 @@
+<launch>
+
+   <arg name="arrived_distance_m" default="3.0" />  <!-- 判断是否到目标的 距离阈值 -->
+   <arg name="stopped_velocity_mps" default="0.01" />  <!-- 判断是否 车停下的 速度阈值 -->
+
+
+   <node pkg="astar_global_path_presolve" type="pathPreSolve" name="pathPreSolve" output="screen">
+
+      <param name="arrived_distance_m" value="$(arg arrived_distance_m)" /> 
+      <param name="stopped_velocity_mps" value="$(arg stopped_velocity_mps)" /> 
+
+   </node>
+
+</launch>

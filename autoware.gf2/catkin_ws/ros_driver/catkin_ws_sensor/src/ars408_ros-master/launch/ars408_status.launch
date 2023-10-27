@@ -1,0 +1,13 @@
+<launch>
+  <arg name="can_device" default="can1" />
+  <arg name="can_topic" default="can_raw" />
+
+  <node pkg="socketcan_bridge" type="socketcan_to_topic_node" name="$(anon socketcan_to_topic_node)" output="screen">
+    <param name="can_device" value="$(arg can_device)" />
+    <remap from="received_messages" to="$(arg can_topic)" />
+  </node>
+
+  <node pkg="pe_ars408_ros" type="pe_ars408_status" name="$(anon pe_ars408_status)" output="screen">
+    <param name="can_input_topic" value="$(arg can_topic)" />
+  </node>
+</launch>

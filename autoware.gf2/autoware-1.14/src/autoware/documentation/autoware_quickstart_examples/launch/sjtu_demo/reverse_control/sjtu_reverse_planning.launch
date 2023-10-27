@@ -1,0 +1,34 @@
+<launch>
+  <arg name="m_use_wayarea" default="false"/>
+  <arg name="m_costmap_length" default="50"/>
+  <arg name="m_costmap_width" default="50"/>
+  <arg name="m_costmap_pos_x" default="0"/>
+  <arg name="m_costmap_pos_y" default="0"/>
+  <arg name="m_use_ll2" default = "false"/>
+  <arg name="m_load_csv" default = "true"/>
+  <arg name="m_path_file" default="$(env HOME)/lkx/lyx/hhh.csv"/>
+
+
+  <include file="$(find costmap_generator)/launch/costmap_generator_option.launch">
+     <arg name="use_wayarea" value="$(arg m_use_wayarea)"/>
+     <arg name="grid_length_x" value="$(arg m_costmap_length)"/>
+     <arg name="grid_length_y" value="$(arg m_costmap_width)"/>
+     <arg name="grid_position_x" value="$(arg m_costmap_pos_x)"/>
+     <arg name="grid_position_y" value="$(arg m_costmap_pos_y)"/>
+  </include>
+
+  <include file="$(find waypoint_maker)/launch/waypoint_loader.launch" >
+      <arg name="load_csv" value="$(arg m_load_csv)"/>
+      <arg name="multi_lane_csv" value="$(arg m_path_file)"/>
+  </include>
+
+  <include file="$(find lane_planner)/launch/lane_rule_option.launch">
+      <arg name="use_ll2" value="$(arg m_use_ll2)" />
+  </include>
+
+  <include file="$(find lane_planner)/launch/lane_select.launch"/>
+  <include file="$(find astar_global_path_presolve)/launch/pathPreSolve.launch"/>
+  <include file="$(find waypoint_planner)/launch/astar_avoid.launch"/>
+  <include file="$(find waypoint_planner)/launch/velocity_set_option.launch"/>
+
+</launch>

@@ -1,0 +1,51 @@
+<launch>
+<!--openplanner global path planning-->
+  <arg name="m_sjtuGoalDataPath" default="$(env HOME)/autoware.gf2/autoware-1.14/src/autoware/documentation/autoware_quickstart_examples/config/sjtu_goal.csv"/>
+  <arg name="m_enableRvizInput" default="true"/>
+  <arg name="m_RoadEdge" default="true" />
+  <arg name="m_DistanceToRoadEdge" default="1.0"/>
+
+  <include file="$(find op_global_planner)/launch/op_global_planner.launch">
+    <arg name="enableRvizInput" value="$(arg m_enableRvizInput)" />
+    <arg name="goalDataPath" value="$(arg m_sjtuGoalDataPath)" />
+    <arg name="RoadEdge" value="$(arg m_RoadEdge)"/>
+    <arg name="DistanceToRoadEdge" value="$(arg m_DistanceToRoadEdge)"/>
+  </include> 
+
+<!--astar global path planning-->
+  <!--costmap generator-->
+  <arg name="grid_length_x" default="50" />
+  <arg name="grid_length_y" default="50" />
+  <arg name="grid_position_x" default="0" />
+  <arg name="grid_position_y" default="0" />
+  <arg name="use_wayarea" default="true" />
+
+  <include file="$(find costmap_generator)/launch/costmap_generator_option.launch">
+    <arg name="grid_length_x" value="$(arg grid_length_x)"/>
+    <arg name="grid_length_y" value="$(arg grid_length_y)"/>
+    <arg name="grid_position_x" value="$(arg grid_position_x)"/>
+    <arg name="grid_position_y" value="$(arg grid_position_y)"/>
+    <arg name="use_wayarea" value="$(arg use_wayarea)"/>
+  </include>
+
+  <!--Astar planner-->
+  <arg name="m_use_ll2" default = "false"/>
+  <include file="$(find lane_planner)/launch/lane_rule_option.launch">
+      <arg name="use_ll2" value="$(arg m_use_ll2)" />
+  </include>
+
+  <include file="$(find lane_planner)/launch/lane_select.launch"/>
+  <include file="$(find freespace_planner)/launch/astar_navi.launch"/>
+  <include file="$(find astar_global_path_presolve)/launch/pathPreSolve.launch"/>
+
+    <arg name="m_load_csv" default ="true"/>
+  <arg name="m_path_file" default="$(env HOME)/autoware.gf2/autoware-1.14/src/autoware/documentation/autoware_quickstart_examples/config/record_waypoints.csv"/>
+  <arg name="replanning_mode" default="False" />
+
+  <!-- 通过waypoint_loader读取全局轨迹的方式 -->
+  <include file="$(find waypoint_maker)/launch/waypoint_loader.launch" >
+      <arg name="load_csv" value="$(arg m_load_csv)"/>
+      <arg name="multi_lane_csv" value="$(arg m_path_file)"/>
+      <arg name="replanning_mode" value="$(arg replanning_mode)"/>
+  </include>
+</launch>

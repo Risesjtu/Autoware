@@ -1,0 +1,47 @@
+<launch>
+  <!--points preprocessor-->
+  <arg name="front_vehicle_x_size" default="2.6"/>   <!-- 车base_link到前面的长度 -->
+  <arg name="back_vehicle_x_size" default="1.0"/>    <!-- 车base_link到后面的长度 -->
+  <arg name="half_vehicle_y_size" default="0.8"/>    <!-- 车base_link到侧面的长度 -->
+  <arg name="range_y_size" default="5.0" />          <!-- 不要车侧面超过这个值的点云 -->
+  <arg name="front_range_x_size" default="10.0" />   <!-- remove points exceed front_range_x_size -->
+  <arg name="back_range_x_size" default="5.0" />     <!-- remove points exceed -back_range_x_size -->
+
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="baselink_to_ground" 
+      args="0.0 0.0 -0.3 0 0 0 1 /base_link /base_ground" />
+
+  <include file="$(find points_preprocessor)/launch/ray_ground_filter.launch" >
+    <arg name="front_vehicle_x_size" value="$(arg front_vehicle_x_size)" />
+    <arg name="back_vehicle_x_size" value="$(arg back_vehicle_x_size)" />
+    <arg name="half_vehicle_y_size" value="$(arg half_vehicle_y_size)" />
+    <arg name="range_y_size" value="$(arg range_y_size)" />          
+    <arg name="front_range_x_size" value="$(arg front_range_x_size)" />   
+    <arg name="back_range_x_size" value="$(arg back_range_x_size)" />     
+    <arg name="base_frame" value="base_ground" />
+  </include>
+
+  <arg name="grid_length_x" default="50" />
+  <arg name="grid_length_y" default="50" />
+  <arg name="grid_position_x" default="0" />
+  <arg name="grid_position_y" default="0" />
+  <arg name="use_wayarea" default="true" />
+
+  <include file="$(find costmap_generator)/launch/costmap_generator_option.launch">
+    <arg name="grid_length_x" value="$(arg grid_length_x)"/>
+    <arg name="grid_length_y" value="$(arg grid_length_y)"/>
+    <arg name="grid_position_x" value="$(arg grid_position_x)"/>
+    <arg name="grid_position_y" value="$(arg grid_position_y)"/>
+    <arg name="use_wayarea" value="$(arg use_wayarea)"/>
+  </include>
+
+  <!--Astar planner-->
+  <arg name="m_use_ll2" default = "false"/>
+  <include file="$(find lane_planner)/launch/lane_rule_option.launch">
+      <arg name="use_ll2" value="$(arg m_use_ll2)" />
+  </include>
+
+  <include file="$(find lane_planner)/launch/lane_select.launch"/>
+  <include file="$(find freespace_planner)/launch/astar_navi.launch"/>
+  <include file="$(find astar_global_path_presolve)/launch/pathPreSolve.launch"/>
+
+</launch>

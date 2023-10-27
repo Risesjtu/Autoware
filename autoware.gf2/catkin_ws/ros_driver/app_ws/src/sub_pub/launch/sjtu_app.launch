@@ -1,0 +1,6 @@
+<launch>
+
+    <!-- 启动app_client 客户端节点 -->
+    <node pkg="app_client" type="app_client" name="client"  output="screen" />
+
+</launch>

@@ -1,0 +1,12 @@
+COMMIT_EDITMSG.md
+
+build
+devel
+install
+log
+logs
+.catkin_tools
+.vscode
+*.pyc
+catkin_ws/ros_driver/catkin_ws_sensor/src/rslidar_sdk/src/rs_driver/cmake/rs_driverConfig.cmake
+catkin_ws/ros_driver/catkin_ws_sensor/src/ouster_example/ouster_ros/metadata

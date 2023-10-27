@@ -1,0 +1,40 @@
+lidar_curb_detection:
+
+  # Topics
+  pointCloudTopic: "points_raw"   # kitti/velo/pointcloud | velodyne_points
+  ground_cloudTopic: "points_ground"
+  no_ground_cloud: "points_no_ground"
+
+  cloudMapperMsg:
+    lowerBound: -22.5
+    upperBound: 22.5
+    nScanRings: 32
+
+  groundSegmentationMsg:
+    segThres: 0.4
+
+  featurePointsMsg:
+    heightMaxThres: 0.7
+    heightMinThres: 0.02
+    heightRegion: 20
+    heightSigmaThre: 0.01
+
+    curvatureRegion: 5
+    curvatureThres: 0.001
+
+    distanceHorizonThres: 1.0
+    distanceVerticalThres: 1.0
+
+    angularRes: 0.3  #激光雷达角度分辨率 角度.
+
+    useVerticle: false
+    useHorizon: true
+  
+  boundaryPointsMsg:
+    varThres: 2.5
+    meanThres: 1.5
+    gridNum: 200
+    gridRes: 0.5
+    curveFitThres: 0.1
+    useCurveRansac: true
+  

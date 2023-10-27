@@ -1,0 +1,6 @@
+<launch>
+
+    <!-- 启动sub_pub 客户端节点 -->
+    <node pkg="sub_pub" type="sub_pub" name="client"  output="screen" />
+
+</launch>

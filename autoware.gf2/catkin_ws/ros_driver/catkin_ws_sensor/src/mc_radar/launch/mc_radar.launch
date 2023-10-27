@@ -1,0 +1,7 @@
+<launch>
+  <arg name="can_type_1" default="socketcan" />
+  <arg name="can_channel_1" default="can0" />
+  <param name="can_type_1" value="$(arg can_type_1)" />
+  <param name="can_channel_1" value="$(arg can_channel_1)" />
+  <node pkg="mc_radar" name="mc_radar_node" type="mc_radar_detect.py" output="screen" > </node>
+</launch>

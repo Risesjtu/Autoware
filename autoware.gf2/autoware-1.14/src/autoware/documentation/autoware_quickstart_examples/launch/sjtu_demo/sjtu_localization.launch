@@ -1,0 +1,57 @@
+<launch>
+  <!-- setting path parameter -->
+  <arg name="get_height" value="true" />
+  <!-- Setup -->
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="base_link_to_localizer" args="0.8 0 1.32 0 0 0 /base_link /velodyne" />
+  
+  <!-- <node pkg="tf2_ros"  type="static_transform_publisher" name="velodyne_up_to_front" 
+      args="0.565839231014 0.059795495123 -0.711265861988 0.0217851 0.6268333 0.0146913 0.7787102 /velodyne /velodyne_front" /> -->
+  <!-- 增高后新车的雷达之间的tf -->
+  <!-- <node pkg="tf2_ros"  type="static_transform_publisher" name="velodyne_up_to_front" 
+      args="0.72565 -0.010159 -0.927972 -0.003838 0.6259495 0.0116931 0.7797664 /velodyne /velodyne_front" />
+   -->
+
+  <!-- 龙马回来增高后新车的雷达之间的tf
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="velodyne_up_to_front" 
+      args="0.691435 -0.050525 -0.931164 0.0320276 0.6234505 -0.0354289 0.7804028 /velodyne /velodyne_front" /> -->
+      
+  <!-- 龙马回来增高后新车的雷达之间的tf(超声波拆车后) -->
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="velodyne_up_to_front" 
+      args="0.618495 -0.047620 -0.927972 0.033075 0.6238796 -0.0365073 0.7799663 /velodyne /velodyne_front" />
+
+  <include file="$(find vehicle_description)/launch/vehicle_model.launch" />
+  <!-- points downsampler -->
+  <include file="$(find points_downsampler)/launch/points_downsample.launch" />
+  <!-- points transformer -->
+  <include file="$(find points_preprocessor)/launch/cloud_transformer.launch" />
+  <!-- nmea2tfpose -->
+  <include file="$(find gnss_localizer)/launch/nmea2tfpose.launch">
+    <arg name="plane" default="126"/>
+    <arg name="fp_llh_topic" default="/fixposition/navsatfix"/>
+    <arg name="fp_ypr_topic" default="/fixposition/ypr"/>
+  </include>
+
+  <!-- points concat -->  
+  <include file="$(find points_preprocessor)/launch/points_concat_filter.launch">
+    <arg name="input_topics" default="[/points_front, /points_up]" />
+    <arg name="output_topic" default="/points_raw" />
+    <arg name="output_frame_id" default="velodyne" />
+    <arg name="need_sample" value="true" />``````````````````````````````````````````````````````````````````````````````````````````````
+  </include>
+
+  <param name="tf_x" value="0.8" />
+  <param name="tf_y" value="0.0" />
+  <param name="tf_z" value="1.32" />
+  <param name="tf_yaw" value="0.0" />
+  <param name="tf_pitch" value="0.0" />
+  <param name="tf_roll" value="0.0" />
+  <param name="localizer" value="velodyne" />
+  <!-- ndt_matching -->
+  <include file="$(find lidar_localizer)/launch/ndt_matching.launch">
+    <arg name="get_height" value="$(arg get_height)"/> 
+    <arg name="use_imu" default="false" />
+    <arg name="imu_topic" default="/fixposition/poiimu" />
+    <arg name="use_gnss" default="1"/>
+    <arg name="gnss_reinit_fitness" default="50.0" />
+  </include>
+</launch>

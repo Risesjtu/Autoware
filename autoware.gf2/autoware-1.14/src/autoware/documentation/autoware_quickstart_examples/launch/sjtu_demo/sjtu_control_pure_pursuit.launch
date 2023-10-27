@@ -1,0 +1,14 @@
+<launch>
+
+<arg name="m_minimum_lookahead_distance" default="6.0"/>
+<arg name="m_minimum_reverse_lookahead_distance" default="2.0"/>
+
+
+<include file="$(find pure_pursuit)/launch/pure_pursuit.launch">  
+  <arg name="minimum_lookahead_distance" value="$(arg m_minimum_lookahead_distance)"/>
+  <arg name="minimum_reverse_lookahead_distance" value="$(arg m_minimum_reverse_lookahead_distance)"/>
+</include>
+
+<include file="$(find twist_filter)/launch/twist_filter.launch"/> 
+
+</launch>

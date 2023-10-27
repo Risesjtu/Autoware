@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>scenario_manager</name>
+  <version>0.0.0</version>
+  <description>The scenario_manager package</description>
+  <maintainer email="autoware@todo.todo">autoware</maintainer>
+  <license>Apache 2</license>
+
+  <buildtool_depend>autoware_build_flags</buildtool_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>vector_map</depend>
+  <depend>autoware_msgs</depend>
+  <depend>autoware_can_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>op_planner</depend>
+  <depend>op_ros_helpers</depend>
+  <depend>pcl_conversions</depend>
+  <depend>pcl_ros</depend>
+  <depend>visualization_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf</depend>
+  <depend>vector_map_msgs</depend>
+  <build_depend>message_generation</build_depend>
+  <build_export_depend>message_generation</build_export_depend>
+  <exec_depend>message_runtime</exec_depend>
+</package>
+

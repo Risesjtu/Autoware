@@ -1,0 +1,12 @@
+<launch>
+<!--openPlanner motion planning-->
+    <include file="$(find op_local_planner)/launch/op_common_params.launch"/>
+    <include file="$(find op_local_planner)/launch/op_trajectory_generator.launch"/>
+    <include file="$(find op_local_planner)/launch/op_motion_predictor.launch"/>
+    <include file="$(find op_local_planner)/launch/op_trajectory_evaluator.launch"/>
+    <include file="$(find op_local_planner)/launch/op_behavior_selector.launch"/>
+
+<!--astar motion planning-->
+    <include file="$(find waypoint_planner)/launch/astar_avoid.launch"/>
+    <include file="$(find waypoint_planner)/launch/velocity_set_option.launch"/>
+</launch>

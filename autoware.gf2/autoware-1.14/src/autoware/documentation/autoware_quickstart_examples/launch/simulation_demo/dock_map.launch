@@ -1,0 +1,29 @@
+<launch>
+
+  <!-- TF -->
+  <include file="$(env HOME)/.autoware/sim_data/tf/tf.launch"/>
+
+  <!-- Point Cloud -->
+  <include file="$(find map_file)/launch/points_map_loader.launch">
+      <arg name="path_pcd" 
+           value=
+           '$(env HOME)/.autoware/sim_data/map/pcd_data/SimEnv.pcd'/>
+  </include>
+  
+  <!-- <node pkg="rviz" type="rviz" name="rviz" 
+    args="-d $(find autoware_quickstart_examples)/launch/sjtu_demo/default.rviz"/>
+  <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" /> -->
+  <node pkg="map_file" type="vector_map_loader" name="vector_map_loader" 
+    args="
+        $(env HOME)/.autoware/env_data/SimVectorMap/area.csv
+        $(env HOME)/.autoware/env_data/SimVectorMap/dtlane.csv  
+        $(env HOME)/.autoware/env_data/SimVectorMap/lane.csv
+        $(env HOME)/.autoware/env_data/SimVectorMap/line.csv
+        $(env HOME)/.autoware/env_data/SimVectorMap/node.csv
+        $(env HOME)/.autoware/env_data/SimVectorMap/point.csv
+        $(env HOME)/.autoware/env_data/SimVectorMap/roadedge.csv
+        $(env HOME)/.autoware/env_data/SimVectorMap/wayarea.csv"/>
+  
+  <node pkg="rviz" type="rviz" name="rviz" 
+    args="-d $(env HOME)/.autoware/env_data/simulation.rviz"/>
+</launch>

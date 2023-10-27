@@ -1,0 +1,4 @@
+<launch>
+    <include file='$(find mpc_follower)/launch/mpc_follower.launch'/>
+    <include file='$(find twist_filter)/launch/twist_filter.launch'/>
+</launch>

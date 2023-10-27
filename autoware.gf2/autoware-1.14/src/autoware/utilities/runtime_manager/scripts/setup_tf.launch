@@ -1,0 +1,19 @@
+<launch>
+
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+  <arg name="yaw" default="0.0"/>
+  <arg name="pitch" default="0.0"/>
+  <arg name="roll" default="0.0"/>
+  <arg name="frame_id" default="base_link"/>
+  <arg name="child_frame_id" default="velodyne"/>
+  <arg name="period_in_ms" default="10"/>
+
+  <!-- tf代表是tf1，tf1的静态发布static_transform_publisher其实是假的，默认按照10hz，或者可以设置 -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_link_to_localizer" args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id) $(arg period_in_ms)"/> -->
+
+  <!-- 建议使用tf2，tf2的静态发布是真的。tf2的静态发布节点包在tf2_ros中 -->
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="base_link_to_localizer" args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id)" />
+
+</launch>

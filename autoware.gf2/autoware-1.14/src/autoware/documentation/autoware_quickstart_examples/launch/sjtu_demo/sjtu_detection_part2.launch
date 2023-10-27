@@ -1,0 +1,50 @@
+<launch>
+
+  <arg name="is_register_lidar2camera_tf" default="true" />
+  <arg name="is_publish_projection_matrix" default="true" />
+  <arg name="is_publish_camera_info" default="true" />
+  <arg name="camera_calib" default="$(env HOME)/.autoware/longma_test/calibration/camera_lidar_3d/senyun/usb_cam_front_lidar_RT_2023_0302.yml"/>
+  <arg name="wayarea_gridmap_layer" default="wayarea" />
+  <arg name="topic_pose_stamped" default="/ndt_pose" />
+  <arg name="topic_twist_stamped" default="/estimate_twist" />
+
+  <arg name="front_vehicle_x_size" default="2.6"/>   <!-- 车base_link到前面的长度 -->
+  <arg name="back_vehicle_x_size" default="1.0"/>    <!-- 车base_link到后面的长度 -->
+  <arg name="half_vehicle_y_size" default="0.8"/>    <!-- 车base_link到侧面的长度 -->
+  <arg name="range_y_size" default="5.0" />          <!-- 不要车侧面超过这个值的点云 -->
+  <arg name="front_range_x_size" default="10.0" />   <!-- remove points exceed front_range_x_size -->
+  <arg name="back_range_x_size" default="5.0" />     <!-- remove points exceed -back_range_x_size -->
+
+  <arg name="left_ignore_line" default="200" />
+  <arg name="right_ignore_line" default="1720" />
+  <arg name="bottom_emergency_line" default="1040" />
+
+  <!-- <include file="$(find lidar_kf_contour_track)/launch/lidar_kf_contour_track.launch"/> -->
+  
+  <!-- tracker_input_topic目前是从range_vision_fusion中获得(/detection/fusion_tools/objects), 也可以直接接受欧式聚类的/cloud_clusters -->>
+  <include file="$(find imm_ukf_pda_track)/launch/imm_ukf_pda_track.launch" >
+    <arg name="tracker_input_topic" value="/detection/fusion_tools/objects" />
+    <arg name="tracker_output_topic" value="/lidar_kf_track/objects" />
+  </include>
+
+  <!-- <include file="$(find object_map)/launch/wayarea2grid.launch"/> -->
+
+  <node name="object_roi_filter_clustering" pkg="roi_object_filter" type="roi_object_filter"
+          output="screen" ns="/lidar_kf_track">
+      <param name="objects_src_topic" value="/tracked_objects"/>
+      <param name="wayarea_gridmap_layer" value="$(arg wayarea_gridmap_layer)"/>
+      <param name="sync_topics" value="false"/>
+      <param name="exception_list" value="[none]"/>
+  </node>
+
+  <!-- for visualization 如果要看wayarea内的, value写/objects_filtered, 否则写/objects-->
+  <node pkg="detected_objects_visualizer" type="visualize_detected_objects" name="kf_filter_visualization"
+          output="screen" ns="/lidar_kf_track">
+      <param name="objects_src_topic" value="/objects_filtered"/>  
+  </node> 
+
+  <node pkg="rm_custom_area" type="rm_custom_area" name="rm_custom_area" output="screen">
+   </node>
+
+</launch>
+   

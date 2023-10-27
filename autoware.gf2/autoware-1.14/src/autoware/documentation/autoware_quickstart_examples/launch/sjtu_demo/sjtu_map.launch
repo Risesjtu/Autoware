@@ -1,0 +1,36 @@
+<launch>
+
+  <!-- TF -->
+  <include file="$(env HOME)/.autoware/sjtu_data/tf/tf.launch"/>
+
+  <!-- Point Cloud -->
+  <include file="$(find map_file)/launch/points_map_loader.launch">
+      <arg name="path_pcd" 
+           value=
+           '$(env HOME)/.autoware/sjtu_data/map/pointcloud_map/autoware-1.pcd,
+           $(env HOME)/.autoware/sjtu_data/map/pointcloud_map/autoware-2.pcd,
+           $(env HOME)/.autoware/sjtu_data/map/pointcloud_map/autoware-3.pcd,
+           $(env HOME)/.autoware/sjtu_data/map/pointcloud_map/autoware-4.pcd,
+           $(env HOME)/.autoware/sjtu_data/map/pointcloud_map/autoware-5.pcd,
+           $(env HOME)/.autoware/sjtu_data/map/pointcloud_map/autoware-6.pcd'/>
+  </include>
+
+  <!-- Vector Map -->
+  <node pkg="map_file" type="vector_map_loader" name="vector_map_loader" 
+    args="
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/custom_area.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/dtlane.csv 
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/area.csv 
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/lane.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/line.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/node.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/point.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/roadedge.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/whiteline.csv
+        $(env HOME)/.autoware/sjtu_data/map/vector_map/v_test/wayarea.csv"/>
+  
+  <node pkg="rviz" type="rviz" name="rviz" 
+    args="-d $(env HOME)/.autoware/sjtu_data/sjtu.rviz"/>
+  <!-- <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" /> -->
+
+</launch>

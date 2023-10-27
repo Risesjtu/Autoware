@@ -1,0 +1,28 @@
+<launch>
+
+  <!-- TF -->
+
+  <include file="$(env HOME)/.autoware/simulation_data/tf_w_m.launch"/>
+
+
+  <!-- Point Cloud -->
+  <include file="$(find map_file)/launch/points_map_loader.launch">
+      <arg name="path_pcd" value="$(env HOME)/.autoware/simulation_data/SimEnv.pcd" />
+  </include>
+
+  <!-- Vector Map -->
+  <node pkg="map_file" type="vector_map_loader" name="vector_map_loader" 
+    args="
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/dtlane.csv
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/lane.csv
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/line.csv
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/node.csv
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/point.csv
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/roadedge.csv
+        $(env HOME)/.autoware/simulation_data/SimVectorMap/whiteline.csv"/>
+  
+  <include file="$(env HOME)/autoware.gf2/autoware-1.14/install/runtime_manager/share/runtime_manager/launch_files/velodyne_vlp16.launch"/>
+
+ <include file="$(env HOME)/autoware.gf2/autoware-1.14/install/points_downsampler/share/points_downsampler/launch/points_downsample.launch"/>
+
+</launch>

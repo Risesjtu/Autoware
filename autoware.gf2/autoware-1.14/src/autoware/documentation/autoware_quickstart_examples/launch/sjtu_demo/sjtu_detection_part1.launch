@@ -1,0 +1,93 @@
+<launch>
+
+  <arg name="is_register_lidar2camera_tf" default="true" />
+  <arg name="is_publish_projection_matrix" default="true" />
+  <arg name="is_publish_camera_info" default="true" />
+  <arg name="camera_calib_front" default="$(env HOME)/.autoware/sjtu_data/calibration/camera_lidar_3d/senyun/20230831_1516_autoware_c2l_rt_1.yml"/>
+  <!-- <arg name="camera_calib_back" default="$(env HOME)/.autoware/longma_test/calibration/camera_lidar_3d/senyun/20230602_back.yml"/> -->
+  <arg name="wayarea_gridmap_layer" default="wayarea" />
+  <arg name="topic_pose_stamped" default="/ndt_pose" />
+  <arg name="topic_twist_stamped" default="/estimate_twist" />
+
+  <arg name="front_vehicle_x_size" default="2.6"/>   <!-- 车base_link到前面的长度 -->
+  <arg name="back_vehicle_x_size" default="1.0"/>    <!-- 车base_link到后面的长度 -->
+  <arg name="half_vehicle_y_size" default="0.8"/>    <!-- 车base_link到侧面的长度 -->
+  <arg name="range_y_size" default="5.0" />          <!-- 不要车侧面超过这个值的点云 -->
+  <arg name="front_range_x_size" default="10.0" />   <!-- remove points exceed front_range_x_size -->
+  <arg name="back_range_x_size" default="5.0" />     <!-- remove points exceed -back_range_x_size -->
+
+  <arg name="left_ignore_line" default="200" />
+  <arg name="right_ignore_line" default="1720" />
+  <arg name="bottom_emergency_line" default="1040" />
+
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="baselink_to_ground" 
+      args="0.0 0.0 -0.3 0 0 0 1 /base_link /base_ground" />
+
+  <!-- vel_pose_mux -->
+  <include file="$(find autoware_connector)/launch/vel_pose_connect.launch">
+    <arg name="topic_pose_stamped" value="$(arg topic_pose_stamped)" />
+    <arg name="topic_twist_stamped" value="$(arg topic_twist_stamped)" />
+  </include>
+
+  <!-- calibration_publisher -->
+  <include file="$(find runtime_manager)/launch_files/calibration_publisher.launch">
+    <arg name="file" value="$(arg camera_calib_front)" />
+    <arg name="register_lidar2camera_tf" value="$(arg is_register_lidar2camera_tf)" />
+    <arg name="publish_extrinsic_mat" value="$(arg is_publish_projection_matrix)" />
+    <arg name="publish_camera_info" value="$(arg is_publish_camera_info)" />
+    <arg name="image_topic_src" default="/image_raw"/>
+    <arg name="camera_frame" default="usb_cam_front"/>
+    <arg name="camera_id" default="/usb_cam_front"/>
+  </include>
+
+  <!-- <include file="$(find runtime_manager)/launch_files/calibration_publisher.launch">
+    <arg name="file" value="$(arg camera_calib_back)" />
+    <arg name="register_lidar2camera_tf" value="$(arg is_register_lidar2camera_tf)" />
+    <arg name="publish_extrinsic_mat" value="$(arg is_publish_projection_matrix)" />
+    <arg name="publish_camera_info" value="$(arg is_publish_camera_info)" />
+    <arg name="image_topic_src" default="/image_raw"/>
+    <arg name="camera_frame" default="usb_cam_back"/>
+    <arg name="camera_id" default="/usb_cam_back"/>
+  </include> -->
+
+  <include file="$(find vision_darknet_detect)/launch/vision_yolo7_detect.launch" >
+    <arg name="image_src" default="/usb_cam_front/image_raw"/>
+    <arg name="left_ignore_line" value="$(arg left_ignore_line)" />
+    <arg name="right_ignore_line" value="$(arg right_ignore_line)" />
+    <arg name="bottom_emergency_line" value="$(arg bottom_emergency_line)" />
+  </include>
+
+  <include file="$(find points_preprocessor)/launch/ray_ground_filter.launch" >
+    <arg name="front_vehicle_x_size" value="$(arg front_vehicle_x_size)" />
+    <arg name="back_vehicle_x_size" value="$(arg back_vehicle_x_size)" />
+    <arg name="half_vehicle_y_size" value="$(arg half_vehicle_y_size)" />
+    <arg name="range_y_size" value="$(arg range_y_size)" />          
+    <arg name="front_range_x_size" value="$(arg front_range_x_size)" />   
+    <arg name="back_range_x_size" value="$(arg back_range_x_size)" />     
+    <arg name="base_frame" value="base_ground" />
+  </include>
+
+  <!-- lidar_euclidean_cluster_detect -->
+  <include file="$(find lidar_euclidean_cluster_detect)/launch/lidar_euclidean_cluster_detect.launch">
+    <arg name="points_node" default="/points_no_ground" />
+    <arg name="use_vector_map" default="false" />
+    <arg name="output_frame" default="velodyne" />
+    <arg name="use_gpu" value="true" />
+  </include>
+
+  <!-- Because output frame dont change frame id of convex hull and bbox, so when output frame = map, change the input of range_vision_fusion = /tracked_objects, otherwise the visualization will fail -->
+  <include file="$(find range_vision_fusion)/launch/range_vision_fusion.launch">
+    <arg name="camera_info_src" default="/usb_cam_front/camera_info"/>
+    <arg name="use_vector_map" default="false" />
+    <arg name="detected_objects_range" default="/cloud_clusters" />
+    <arg name="left_ignore_line" value="$(arg left_ignore_line)" />
+    <arg name="right_ignore_line" value="$(arg right_ignore_line)" />
+    <arg name="bottom_emergency_line" value="$(arg bottom_emergency_line)" />
+  </include>
+
+
+  <include file="$(find object_map)/launch/wayarea2grid.launch"/>
+
+
+</launch>
+   

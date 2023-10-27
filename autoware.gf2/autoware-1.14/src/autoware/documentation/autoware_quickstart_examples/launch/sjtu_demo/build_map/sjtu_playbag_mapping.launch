@@ -1,0 +1,56 @@
+<launch>
+  <!-- setting path parameter -->
+  <arg name="get_height" value="true" />
+  <!-- TF: world2map, map2mobility -->
+  <include file="$(env HOME)/.autoware/sjtu_data/tf/tf.launch"/>
+  <!-- Setup -->
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="base_link_to_localizer" args="0.7 0 1.85 0 0 0 /base_link /velodyne" />
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="localizer_to_os_lidar" args="0 0 0 0 0 0 /velodyne /os_lidar" />
+  <node pkg="tf2_ros"  type="static_transform_publisher" name="localizer_to_os_imu" args="0 0 0 0 0 0 /velodyne /os_imu" />
+  <include file="$(find vehicle_description)/launch/vehicle_model.launch" />
+  <node pkg="rqt_tf_tree" type="rqt_tf_tree" name="rqt_tf_tree" />
+  <node pkg="rviz" type="rviz" name="rviz"/>
+
+
+
+  <param name="tf_x" value="0.7" />
+  <param name="tf_y" value="0.0" />
+  <param name="tf_z" value="1.85" />
+  <param name="tf_yaw" value="0.0" />
+  <param name="tf_pitch" value="0.0" />
+  <param name="tf_roll" value="0.0" />
+  <param name="localizer" value="velodyne" />
+  <!-- ndt_mapping -->
+  <include file="$(find lidar_localizer)/launch/ndt_mapping.launch">
+    <arg name="method_type" default="0" /> 
+    <arg name="use_odom" default="false" />
+    <arg name="use_imu" default="false" />
+    <arg name="imu_upside_down" default="false" />
+    <arg name="imu_topic" default="/imu_raw" />
+    <arg name="incremental_voxel_update" default="false" />
+  </include>
+ 
+  <!-- Play rosbag -->
+  <!-- list filenames in dir: $ ls 221019/ | cat -->
+  <!-- list fullnames in current dir:$ ls -1 |awk '{print i$0}' i=`pwd`'/' -->
+  <node pkg="rosbag" type="play" name="play" 
+      args="-r 1
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-53-52_2.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-54-41_3.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-55-31_4.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-56-20_5.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-57-09_6.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-57-58_7.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-58-48_8.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-14-59-37_9.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-15-00-27_10.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-15-01-17_11.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-15-02-10_12.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-15-03-05_13.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-15-03-59_14.bag
+            $(env HOME)/.autoware/sjtu_data/rosbag/221019/bag_2022-10-19-15-04-53_15.bag
+        ">
+  </node>
+
+
+</launch>
